@@ -1,8 +1,8 @@
 """Скрипт для заполнения данными таблиц в БД Postgres."""
 import csv
-
 import psycopg2
 
+# Подключаемся
 with psycopg2.connect(
         host='localhost',
         database='north',
@@ -11,6 +11,7 @@ with psycopg2.connect(
 ) as conn:
     with conn.cursor() as cur:
 
+        # Заполняем данными таблицу customers
         with open('north_data\\customers_data.csv', newline='', encoding='windows-1251') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -19,6 +20,7 @@ with psycopg2.connect(
                              f"{row['company_name']}",
                              f"{row['contact_name']}"))
 
+        # Заполняем данными таблицу employees
         with open('north_data\\employees_data.csv', newline='', encoding='windows-1251') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -30,6 +32,7 @@ with psycopg2.connect(
                              f"{row['birth_date']}",
                              f"{row['notes']}"))
 
+        # Заполняем данными таблицу orders
         with open('north_data\\orders_data.csv', newline='', encoding='windows-1251') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -40,5 +43,5 @@ with psycopg2.connect(
                              f"{row['order_date']}",
                              f"{row['ship_city']}"))
 
-
+# Закрываем соединение
 conn.close()
