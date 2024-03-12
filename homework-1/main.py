@@ -49,3 +49,14 @@ try:
 finally:
     # Закрываем соединение
     conn.close()
+
+
+# SELECT * from customers;
+# SELECT * from employees;
+# SELECT * from orders;
+#
+# INSERT into customers VALUES ('ALFKI', 'Alfreds Futterkiste', 'Maria Anders');
+#
+# DELETE FROM orders *;
+# DELETE FROM customers *;
+# DELETE FROM employees *;
