@@ -14,13 +14,6 @@ WHERE discontinued = 1
 -- Для 4-го пункта может потребоваться удаление ограничения, связанного с foreign_key.
 --Подумайте, как это можно решить, чтобы связь с таблицей order_details все же осталась.
 
--- Решение с удалением связи
--- Удаляем связь
-ALTER TABLE order_details DROP CONSTRAINT fk_order_details_products
--- Удаляем снятые с продажи продукты из таблицы продуктов
-DELETE FROM products WHERE discontinued = 1
-
-
 -- Решение без удаления связи
 -- Копируем заказы, в которых участвуют снятые с продажи продукты, чтобы не терять данные
 SELECT * INTO orders_with_discontinued_products FROM order_details
@@ -45,4 +38,16 @@ ADD CONSTRAINT pk_discontinued_products PRIMARY KEY(product_id)
 
 ALTER TABLE order_details_with_discontinued_products
 ADD CONSTRAINT fk_order_details_with_discontinued_products_products FOREIGN KEY(product_id) REFERENCES discontinued_products(product_id)
+
+
+
+
+-- Решение с удалением связи
+-- Сначала вернем все что удалили
+INSERT INTO products SELECT * FROM discontinued_products
+INSERT INTO order_details SELECT * FROM order_details_with_discontinued_products
+-- Удалим связь
+ALTER TABLE order_details DROP CONSTRAINT fk_order_details_products
+-- Удаляем снятые с продажи продукты из таблицы продуктов
+DELETE FROM products WHERE discontinued = 1
 
